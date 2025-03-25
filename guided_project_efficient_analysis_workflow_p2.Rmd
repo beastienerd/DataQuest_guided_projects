@@ -6,14 +6,39 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 ```
 
 
 The book company I'm working for launched a new program encouraging customers to buy more books on July 1st, 2019, and it wants to know if this new program was successful at increasing sales and improving review quality. 
 This guided project will focus on using the packages `purrr` and `stringr`.
 
-Data Exploration:
-How big is the dataset? What are the column names and what do they represent?
-What are the data types of each of the columns?
-Do any of the columns have missing data? If so, make a note of this.
+## Data Exploration
+There are 5,000 purchases in the sales2019 dataset with information on the date the purchase was made, whether the user submitted a review, the title of the book purchased, how many books purchased, and the type of customer that made the purchase (ie. Business or Individual).   
+
+All the columns, except for total amount purchased, are in a character or string format. This is a hint to the type of data manipulation that will take place in this project: string manipulation.  
+
+```{r}
+library(readr)
+library(tibble)
+library(stringr)
+library(purrr)
+```
+
+```{r}
+sales_df <- read.csv("~/git/DataQuest_guided_projects/sales2019.csv")
+glimpse(sales_df)
+
+```
+
+## Handling Missing Data
+```{r}
+#glimpse of the data showed missing values for a column. Created a for loop to find out how many columns have NA's.
+
+for (col_name in names(sales_df)) {
+  col_data <- sales_df[[col_name]]
+  total_na <- sum(is.na(col_data))
+  print(total_na)
+}
+```
+
