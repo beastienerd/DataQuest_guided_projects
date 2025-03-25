@@ -2,7 +2,9 @@
 title: 'Guided Project: Creating an Efficient Data Analysis Workflow, part 2'
 author: "Mariby Cruz"
 date: "2025-03-25"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
