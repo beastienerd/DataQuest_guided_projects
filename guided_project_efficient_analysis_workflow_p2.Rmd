@@ -142,3 +142,8 @@ print(review_sentiment_summary_table)
 ```
 
 Based on the summary table, there wasn't much of a difference on review sentiment before and after the program was implemented.
+
+## Further Steps
+- We filled all of the missing purchase quantity values using just the average purchase quantity in the entire dataset. This worked out for us, but it totally eliminates any information about the books themselves. It might be better to compute the average purchase quantity for each book instead, and then, impute these values for the books instead.
+
+- Is there any relationship between month and the amount of books that were sold? We focused our attention on a new program, but we can also perform a similar analysis based on the month and try to look for any trends that are associated with a smaller unit of time.
