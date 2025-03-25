@@ -99,13 +99,46 @@ sales_complete <- sales_complete %>%
   )
 
 # Using group_by() and summarize() to create a summary tibble
-sales_summary_table <- sales_complete %>%
+program_sales_summary_table <- sales_complete %>%
   group_by(program_group) %>%
   summarize(
     sum_of_purchases = round(sum(total_purchased), 0)
   )
 
-print(sales_summary_table)
+print(program_sales_summary_table)
 ```
 
 Based on the summary table, the sales before the program were higher than after the program was implemented. 
+
+## Comparing Book Sales by Customer Type
+
+There is a sub-analysis that can be done to check if a certain customer type responded better to the program.  
+
+```{r}
+customer_sales_summary_table <- sales_complete %>%
+  group_by(program_group, customer_type) %>%
+  summarize(
+    sum_of_purchases = round(sum(total_purchased), 0)
+  )
+
+print(customer_sales_summary_table)
+```
+
+It looks like businesses bought more books after the program's implementation by ~100. 
+
+## Comparing Review Sentiment Between Pre- and Post-Program Sales
+
+Final question to answer is: did review scores improve as a result of the program?
+
+```{r}
+#Summary table that compares the number of positive reviews before and after July 1, 2019
+
+review_sentiment_summary_table <- sales_complete %>%
+  group_by(program_group, review_is_positive) %>%
+  summarize(
+    sum_of_purchases = round(sum(total_purchased), 0)
+  )
+print(review_sentiment_summary_table)
+```
+
+Based on the summary table, there wasn't much of a difference on review sentiment before and after the program was implemented.
