@@ -24,6 +24,7 @@ library(tibble)
 library(stringr)
 library(purrr)
 library(dplyr)
+library(lubridate)
 ```
 
 ```{r}
@@ -81,3 +82,30 @@ sales_complete<- sales_complete %>% mutate(review_is_positive = unlist(map(user_
 
 ```
 
+## Comparing Book Sales Between Pre- and Post-Program Sales
+A few more steps are needed to prepare the data and answer the question: Was the new book program effective in increasing book sales?  
+
+Background: The program started on July 1, 2019 and the data contains all of the sales for 2019.  
+1) Convert dates from strings to dates  
+2) Sort the data that's pre and post program sales  
+3) The analysis should be in a neat form so it's easy to understand  
+
+```{r}
+sales_complete$date_conv <- mdy(sales_complete$date)
+
+sales_complete <- sales_complete %>%
+  mutate(
+    program_group = if_else(date_conv < "2019-07-01", "Pre", "Post")
+  )
+
+# Using group_by() and summarize() to create a summary tibble
+sales_summary_table <- sales_complete %>%
+  group_by(program_group) %>%
+  summarize(
+    sum_of_purchases = round(sum(total_purchased), 0)
+  )
+
+print(sales_summary_table)
+```
+
+Based on the summary table, the sales before the program were higher than after the program was implemented. 
