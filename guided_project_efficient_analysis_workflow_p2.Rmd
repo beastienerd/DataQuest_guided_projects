@@ -1,0 +1,19 @@
+---
+title: 'Guided Project: Creating an Efficient Data Analysis Workflow, part 2'
+author: "Mariby Cruz"
+date: "2025-03-25"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+The book company I'm working for launched a new program encouraging customers to buy more books on July 1st, 2019, and it wants to know if this new program was successful at increasing sales and improving review quality. 
+This guided project will focus on using the packages `purrr` and `stringr`.
+
+Data Exploration:
+How big is the dataset? What are the column names and what do they represent?
+What are the data types of each of the columns?
+Do any of the columns have missing data? If so, make a note of this.
