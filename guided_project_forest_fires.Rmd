@@ -8,3 +8,40 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 ```
+
+## Introduction
+### The importance of forest fire data
+
+This dataset was is associated with the scholarly article, **A Data Mining Approach to Predict Forest Fires using Meteorological Data** by Paulo Cortez and Anıbal Morais. It contains weather measurements such as relative humidity, wind speed, rain, burnt area, and additional Fire Weather Indices (FWI).  
+By collecting this data, a scientist can understand how each measurement influences forest fires - if there's any relationship. A single row of data represents a point in time on a single location with different weather condition measurements recorded. 
+This guided project focuses on creating visuals to help us understand how forest fires have developed over time as these measurements change. 
+
+
+```{r, echo=FALSE}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(readr)
+```
+
+```{r}
+forestfires <- read.csv("~/git/DataQuest_guided_projects/forestfires.csv")
+glimpse(forestfires)
+```
+
+## Data Processing
+
+The months and days are stored as characters and would display in alphabetical order when outputted. Therefore, there needs to be a conversion and be put in the order that they occur.
+
+```{r}
+forestfires %>% pull(month) %>% unique
+
+forestfires %>% pull(day) %>% unique
+
+forestfires$month <- factor(forestfires$month, levels = c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"))
+
+forestfires$day <- factor(forestfires$day, levels = c("sun", "mon", "tue", "wed", "thu", "fri"))                       
+```
+
+## When do forest fires occur?
+
