@@ -74,10 +74,20 @@ fire_counts_day <- forestfires %>%
 fire_counts_day %>% 
   ggplot(aes(x = day, y = fire_counts)) +
   geom_col() +
-  ylim(0, 100)
+  ylim(0, 100) +
+  labs(
+    title = "Total Number of Fires by Day",
+    x = "Day of the Week",
+    y = "Number of Fires"
+  )
 
 fire_counts_month %>%
   ggplot(aes(x = month, y = fire_counts)) +
-  geom_col()
+  geom_col() +
+  labs(
+    title = "Total Number of Fires by Month",
+    x = "Month",
+    y = "Number of Fires"
+  )
 ```
 
