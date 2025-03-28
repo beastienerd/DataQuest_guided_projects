@@ -5,7 +5,7 @@ date: "2025-03-27"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, fig.width = 6,  fig.asp = 0.618, out.width = "70%", fig.align = "center"}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 ```
 
@@ -90,4 +90,35 @@ fire_counts_month %>%
     y = "Number of Fires"
   )
 ```
+
+
+## Plotting Other Variables Against Time
+
+When FWI Index measurements are plotted for each month, there is a relationship with the the number of forest fires in the months of August and September. For instance, there are higher temperature values meaning it's warmer, higher DMC (Duff Moisture Code) meaning more moisture in loose leaf organic matter, and higher DC (Drought Code) meaning more moisture in deep compacted organic layers.
+
+```{r}
+#pivot data into long format to facet_wrap them in the plot
+forestfires_long <- forestfires %>%
+  pivot_longer(
+    cols = c(FFMC, DMC, DC, ISI, temp, RH, wind, rain), 
+    names_to = "Index",
+    values_to = "Value"
+  )
+
+#created boxplots to see the distribution of index values throughout the month
+forestfires_long %>%
+  ggplot(aes(x = month, y = Value)) +
+  geom_boxplot() + 
+  facet_wrap(
+    vars(Index),
+    scales = "free_y"
+  ) +
+  labs(
+      title = "Forest Fire FWI Readings During Each Month",
+      y = "FWI Value",
+      x = "Month"
+    ) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  
+```
+
 
