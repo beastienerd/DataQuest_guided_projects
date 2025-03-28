@@ -121,4 +121,63 @@ forestfires_long %>%
   
 ```
 
+## Examining Forest Fire Severity
+
+Data doesn't always have a variable that measures severity. DataQuest shows a way to represent that with a proxy. In this dataset, the variable `area` measures the number of hectares burned during a forest fire. So, the assumption is that more severe fires mean larger area of forest burned.
+
+The scatter plots below show that the largest forest fires burning about 600-900 ha, also had index recordings of high temperature, high FFMC, low ISI, low rain, and low humidity. These variables would be prioritized to investigate models that can help predict and mitigate forest fires. 
+
+```{r}
+#created scatter plot to see the relationship between index values and area burnt
+forestfires_long %>%
+  ggplot(aes(x = Value, y = area)) +
+  geom_point() + 
+  facet_wrap(
+    vars(Index),
+    scales = "free_x"
+  ) +
+  labs(
+      title = "The Reletionship Between FWI Index and Area Burned",
+      x = "FWI Value",
+      y = "Area Burned (Hectares)")
+```
+
+## Outlier Problem
+
+The graphs above have two high extreme values with large hectares burned, which obscures the relationship between index values and the distribution of smaller hectares burned.
+
+```{r}
+#Distribution of area
+forestfires %>%
+    ggplot(aes(x = area)) +
+    geom_histogram()
+
+#filter for data to keep 300 ha or less burned
+forestfires_area1 <- forestfires_long %>%
+  filter(
+    area < 300
+  )
+
+forestfires_area1 %>% 
+    ggplot(aes(x = Value, y = area)) +
+    geom_point() +
+    facet_wrap(
+    vars(Index),
+    scales = "free_x"
+  )
+
+#filter for data to keep data beteen 10 - 300 ha
+forestfires_area2 <- forestfires_long %>%
+  filter(
+    area > 10 & area < 300
+  )
+
+forestfires_area2 %>% 
+    ggplot(aes(x = Value, y = area)) +
+    geom_point() +
+    facet_wrap(
+    vars(Index),
+    scales = "free_x"
+  )
+```
 
