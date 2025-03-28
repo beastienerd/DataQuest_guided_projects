@@ -12,8 +12,8 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 ## Introduction
 ### The importance of forest fire data
 
-This dataset was is associated with the scholarly article, **A Data Mining Approach to Predict Forest Fires using Meteorological Data** by Paulo Cortez and Anıbal Morais. It contains weather measurements such as relative humidity, wind speed, rain, burnt area, and additional Fire Weather Indices (FWI).  
-By collecting this data, a scientist can understand how each measurement influences forest fires - if there's any relationship. A single row of data represents a point in time on a single location with different weather condition measurements recorded. 
+This dataset was is associated with the scholarly article, **A Data Mining Approach to Predict Forest Fires using Meteorological Data** by Paulo Cortez and Anıbal Morais. The data was collected on forest fires in Portugal. It contains weather measurements such as relative humidity, wind speed, rain, burnt area, and additional Fire Weather Indices (FWI).  
+By collecting this data, a scientist can understand how each measurement influences forest fires - if there's any relationship. A single row of data represents a point in time on a single location where a fire occured with different weather condition measurements recorded. 
 This guided project focuses on creating visuals to help us understand how forest fires have developed over time as these measurements change. 
 
 
@@ -40,8 +40,44 @@ forestfires %>% pull(day) %>% unique
 
 forestfires$month <- factor(forestfires$month, levels = c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"))
 
-forestfires$day <- factor(forestfires$day, levels = c("sun", "mon", "tue", "wed", "thu", "fri"))                       
+forestfires$day <- factor(forestfires$day, levels = c("sun", "mon", "tue", "wed", "thu", "fri", "sat")) 
+
+#no missing data present
+col_missing_counts <- c()
+for (col_name in names(forestfires)) {
+  #sum up the counts of NA for each column
+  col_missing_counts[col_name] <- sum(is.na(forestfires[col_name]))
+}
+col_missing_counts
 ```
 
 ## When do forest fires occur?
+
+It seems that there may be less fires during the middle of the week, specifically on Wednesdays and Thursdays. I would wildly guess that there are fewer fires in the middle of the week because there are less people lighting fires near forests (ie. camping fires).  
+Moreover, there is a higher frequency of fires in the months of August and September. This may be because this is the peak of summer heat in Portugal making conditions drier and easier to ignite. Coupled with summer travelling and higher probability of accidental fires. 
+
+```{r}
+#created tibbles of the number of fires on each day and in each month.
+fire_counts_month <- forestfires %>%
+    group_by(month) %>%
+    summarize(
+      fire_counts = n()
+    )
+
+fire_counts_day <- forestfires %>%
+    group_by(day) %>%
+    summarize(
+      fire_counts = n()
+    )
+
+#Creating barcharts for the counts above
+fire_counts_day %>% 
+  ggplot(aes(x = day, y = fire_counts)) +
+  geom_col() +
+  ylim(0, 100)
+
+fire_counts_month %>%
+  ggplot(aes(x = month, y = fire_counts)) +
+  geom_col()
+```
 
