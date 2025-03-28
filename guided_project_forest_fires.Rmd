@@ -2,7 +2,9 @@
 title: "Analyzing Forest Fire Data Through Data Visualizations"
 author: "Mariby Cruz"
 date: "2025-03-27"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE, fig.width = 6,  fig.asp = 0.618, out.width = "70%", fig.align = "center"}
@@ -144,7 +146,8 @@ forestfires_long %>%
 
 ## Outlier Problem
 
-The graphs above have two high extreme values with large hectares burned, which obscures the relationship between index values and the distribution of smaller hectares burned.
+The graphs above have two high extreme values with large hectares burned, which obscures the relationship between index values and the distribution of smaller hectares burned. The graphs below show the clarity of the relationships between index and amount of hectares burnt when outlier data is filtered out. Ranges of the index measurements are easier to pinpoint and show when fires are more likely to become severe.
+
 
 ```{r}
 #Distribution of area
