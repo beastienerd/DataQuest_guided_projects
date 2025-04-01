@@ -33,11 +33,11 @@ The data was retrieved from the 2011 NYC Schools Survey. Each line of data has i
 
 ```{r}
 #importing data
-combined <- read_csv("~/git/DataQuest_guided_projects/combined_schools.csv", show_col_types =  FALSE)
+combined <- read_csv("~/git/DataQuest_guided_projects/nyc_school_survey/combined_schools.csv", show_col_types =  FALSE)
 
-gened_df <- read_tsv("~/git/DataQuest_guided_projects/2011 data files online/masterfile11_gened_final.txt", show_col_types = FALSE)
+gened_df <- read_tsv("~/git/DataQuest_guided_projects/nyc_school_survey/2011 data files online/masterfile11_gened_final.txt", show_col_types = FALSE)
 
-district75_df <- read_tsv("~/git/DataQuest_guided_projects/2011 data files online/masterfile11_d75_final.txt", show_col_types = FALSE) 
+district75_df <- read_tsv("~/git/DataQuest_guided_projects/nyc_school_survey/2011 data files online/masterfile11_d75_final.txt", show_col_types = FALSE) 
 ```
 
 ### Simplifying the Dataframes
@@ -48,6 +48,8 @@ district75_df <- read_tsv("~/git/DataQuest_guided_projects/2011 data files onlin
 
 highschool <- gened_df %>%
     filter(schooltype == "High School") %>% #narrowed observations from 1646 to 383
-    select(-contains(c("_t", "_s"))) #dropped teacher and student responses
+    select(1:32, -d75, -highschool) #dropped teacher and student responses
+district75 <- district75_df %>% #narrowed observations from 1646 to 383
+    select(1:32, -d75, -highschool) #dropped teacher and student responses
 ```
 
