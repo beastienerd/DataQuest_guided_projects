@@ -48,8 +48,21 @@ district75_df <- read_tsv("~/git/DataQuest_guided_projects/nyc_school_survey/201
 
 highschool <- gened_df %>%
     filter(schooltype == "High School") %>% #narrowed observations from 1646 to 383
-    select(1:32, -d75, -highschool) #dropped teacher and student responses
+    select(1:32, -d75, -highschool) %>%#dropped teacher and student responses
+    rename(DBN = dbn)
+
 district75 <- district75_df %>% #narrowed observations from 1646 to 383
-    select(1:32, -d75, -highschool) #dropped teacher and student responses
+    select(1:32, -d75, -highschool) %>% #dropped teacher and student responses
+    rename(DBN = dbn)
+```
+
+### Creating a Single Dataframe
+
+```{r}
+schools_combined <- rbind(highschool, district75) #since both df contained the same columns, rbind() used
+
+combined_all <- combined %>%
+    left_join(schools_combined, by = "DBN") #left joining to add data that matches DBN on the combined dataframe which has all testing scores
+
 ```
 
