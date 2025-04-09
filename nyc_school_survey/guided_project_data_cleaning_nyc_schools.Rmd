@@ -87,7 +87,7 @@ sat_cors <- cor_tib %>%
 print(sat_cors)
 ```
 
-There were 30 schools in the survey that did not have what Boro it was from, so these were removed from the plot. It did not change the relationship between average SAT score and schools with free and reduced lunch. 
+There were 30 schools in the survey that did not have what borough it was from, so these were removed from the plot. It did not change the relationship between average SAT score and schools with free and reduced lunch. 
 
 This is an interesting observation, because I would have thought that having access to food would mean that a student would perform better. This may be misleading and might point to look into the types of testing resources available for students. 
 
@@ -99,5 +99,18 @@ frl_plot <- combined_all %>%
   geom_point()
 
 frl_plot
+```
+
+I plotted the demographic indicators like asian, white, black and hispanic percentage of each school and the average SAT score. Then split it by the borough that each school is from. There was an interesting group of schools in the Bronx that had higher scores than the rest of the schools in the Bronx. I would like to know if those schools had testing programs. 
+
+```{r}
+combined_demo_longer <- combined_all %>%
+  filter(!is.na(boro)) %>%
+  pivot_longer(cols = c(asian_per, white_per, black_per, hispanic_per),
+               names_to = "demographic_indicator",
+               values_to = "percent")
+ggplot(data = combined_demo_longer,
+       aes(x = percent, y = avg_sat_score, color = demographic_indicator)) +
+  geom_point() + facet_wrap(vars(boro))
 ```
 
