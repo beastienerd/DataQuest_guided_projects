@@ -66,3 +66,38 @@ combined_all <- combined %>%
 
 ```
 
+### Looking for Correlations and Examining Relationships
+
+After creating a correlation matrix and filtering for the variables that have a correlation strength of -0.5 or +0.5, the data show 11 variables that influence the average SAT score. 
+Among these are test variables like the average math, writing and reading scores - these have a strong positive relationship. 
+Asian and white percentage also had a contribution to a high SAT score, but the relationship is not the strongest. 
+It was interesting to see a strong negative relationship with the free or reduced lunch percent, meaning that it contributed to a low SAT score.
+```{r}
+#creating a correlation matrix to narrow in on relationships between variables
+cor_mat <- combined_all %>%
+  select(where(is.numeric)) %>% cor(use = "pairwise.complete.obs")
+#visualizing the correlation matrix by turning the dataframe into a tibble
+cor_tib <- cor_mat %>%
+  as_tibble(rownames = "variable")
+#followed by selecting those variables Plus Y-variable and filtering the cor strength.
+sat_cors <- cor_tib %>%
+  select(variable, avg_sat_score) %>%
+  filter(avg_sat_score > 0.5 | avg_sat_score < -0.5) 
+
+print(sat_cors)
+```
+
+There were 30 schools in the survey that did not have what Boro it was from, so these were removed from the plot. It did not change the relationship between average SAT score and schools with free and reduced lunch. 
+
+This is an interesting observation, because I would have thought that having access to food would mean that a student would perform better. This may be misleading and might point to look into the types of testing resources available for students. 
+
+Schools in the Bronx and Brooklyn had the highest percentage of free and reduced lunch but also the lowest average SAT scores. 
+```{r}
+frl_plot <- combined_all %>% 
+  filter(!is.na(boro)) %>%
+  ggplot(aes(x = frl_percent, y = avg_sat_score, color = boro)) +
+  geom_point()
+
+frl_plot
+```
+
