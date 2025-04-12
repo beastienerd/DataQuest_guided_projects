@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
 ## Introduction
@@ -115,15 +115,17 @@ ggplot(data = combined_demo_longer,
 ```
 
 ### Differences in Student, Parent, and Teacher Perceptions
+
+In order to see the different perspectives from students, teachers and parents on each metic like safety and communication, the columns in the data have to be cleaned and manipulated. Right now, the survey question columns are coded with the metric and who responded.
 ```{r}
 #trying to separate the different response types like students, teachers and the metrics like academic, safety 
 library(stringr)
 
 persp_longer <- combined_all %>%
-    pivot_longer(cols = c(saf_p_11:aca_s_11),
+    pivot_longer(cols = c(saf_p_11:aca_s_11), #first pivot the columns into survey question
                  names_to = "survey_question",
                  values_to = "score") %>%
-  mutate(response_type = 
+  mutate(response_type =                      #next mutate two columns response type ande metric
            if_else((str_sub(survey_question, 4, 6)) == "_p_", "parent",                               if_else((str_sub(survey_question, 4, 6)) == "_t_", "teacher",                             if_else((str_sub(survey_question, 4, 6)) == "_s_", "student", "tot")))) %>%
   mutate(metric =
            if_else((str_sub(survey_question, 1, 3)) == "saf", "saftey and respect",
@@ -131,3 +133,21 @@ persp_longer <- combined_all %>%
                if_else((str_sub(survey_question, 1, 3)) == "com", "communication", "academic expectations"))))
 ```
 
+Now that the data is in a wide format and each question has been separated into the different columns we can create a box plot to see how the scores shift among audience.
+
+It looks like parents rank the metrics higher than students and teachers. This could be because their perspective is based on what their told and hear and not a first-hand experience. 
+Student have a more pessimistic view of the metrics. Teachers seem to have varying perspectives. This could be due to different reasons, and would need to interview the teachers to find out more about why some think highly of schools' communication and others think poorly of it. 
+
+```{r}
+persp_longer %>% 
+    filter(!response_type == "tot") %>%
+    ggplot(aes(x = metric, y = score, fill = response_type)) +
+    geom_boxplot()
+```
+
+### Futuring questions
+Is there a relationship between gender percentages and average SAT scores? How about for the different sections of the SAT (Reading, Writing, and Math)?
+
+Which NYC schools seem to have the best quality metrics according to survey data? Is there a difference if you break this down by response type?
+
+Can you learn anything from the differences in school quality metric perception between groups? For example, if you created a new variable by subtracting saf_p_11 from saf_s_11, do you think this difference in how students and parents perceive safety may be related to any other variables?
