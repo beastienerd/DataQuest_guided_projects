@@ -114,3 +114,20 @@ ggplot(data = combined_demo_longer,
   geom_point() + facet_wrap(vars(boro))
 ```
 
+### Differences in Student, Parent, and Teacher Perceptions
+```{r}
+#trying to separate the different response types like students, teachers and the metrics like academic, safety 
+library(stringr)
+
+persp_longer <- combined_all %>%
+    pivot_longer(cols = c(saf_p_11:aca_s_11),
+                 names_to = "survey_question",
+                 values_to = "score") %>%
+  mutate(response_type = 
+           if_else((str_sub(survey_question, 4, 6)) == "_p_", "parent",                               if_else((str_sub(survey_question, 4, 6)) == "_t_", "teacher",                             if_else((str_sub(survey_question, 4, 6)) == "_s_", "student", "tot")))) %>%
+  mutate(metric =
+           if_else((str_sub(survey_question, 1, 3)) == "saf", "saftey and respect",
+             if_else((str_sub(survey_question, 1, 3)) == "eng", "engagement",
+               if_else((str_sub(survey_question, 1, 3)) == "com", "communication", "academic expectations"))))
+```
+
